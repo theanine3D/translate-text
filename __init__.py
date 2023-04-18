@@ -184,26 +184,26 @@ class TranslateText(bpy.types.Operator):
         service = bpy.context.scene.TranslateTextProp.translator_service
         overwrite = bpy.context.scene.TranslateTextProp.overwrite
 
+        # Get full language names
+        lang_names = get_full_langnames(langs)
+
         # Service-specific tweaks
         if service == 'baidu':
             for lang in langs:
                 if lang == "ar":
-                    lang = "ara"
+                    langs[langs.index(lang)] = "ara"
                 if lang == "fr":
-                    lang = "fra"
+                    langs[langs.index(lang)] = "fra"
                 if lang == "es":
-                    lang = "spa"
+                    langs[langs.index(lang)] = "spa"
                 if lang == "ja":
-                    lang = "jp"
+                    langs[langs.index(lang)] = "jp"
                 if lang == "ko":
-                    lang = "kor"
+                    langs[langs.index(lang)] = "kor"
                 if lang == "vi":
-                    lang = "vie"
+                    langs[langs.index(lang)] = "vie"
 
         translated_text = ""
-
-        # Get full language names
-        lang_names = get_full_langnames(langs)
 
         # Make sure we're actually in the text editor first
         area = bpy.context.area
