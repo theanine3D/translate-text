@@ -31,6 +31,7 @@ Finding this addon useful?<br>
 - After installing the addon, you must then install the addon's dependencies. There's an "Install Dependencies" button underneath the addon listing in Blender's preferences. Please be patient after pressing the button. Dependencies are conveniently installed into the addon's own folder, so deleting the addon's folder will remove all of the dependencies as well. 
 - The translate settings panel can be found in the right sidebar of the Text Editor in Blender. Press Ctrl + T to open the sidebar and then click on the "Translate" tab.
 - Translations are stored in a text file named after the target language. For example, if you translate English to Chinese, a text file named "Chinese" will be used to store the resulting translation. If a text file with that name doesn't exist, the addon will create one. 
+- This addon is best used by keeping two separate text editors open in Blender, one for the source language, and one for the target language. See preview below for an example.
 
 ## Preview ##
 ![image](https://user-images.githubusercontent.com/88953117/232837007-fdc965dd-275e-44e8-bef7-4ca0cf3e1db9.png)
