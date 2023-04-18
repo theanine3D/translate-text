@@ -2,7 +2,11 @@
 Blender (3.0+) addon that adds translation features to Blender's text editor. Tutorial makers and 3D educators that teach multilanguage classes may find this addon useful for showing step-by-step instructions in multiple languages.
 
 ## Features
-- Support for 4 different translation services - Google, Bing, Baidu, Sogou
+- Support for 4 different translation services
+  - Google
+  - Bing
+  - Baidu
+  - Sogou
 - Support for 13 different languages:
   - English
   - Chinese
