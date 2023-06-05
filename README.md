@@ -36,8 +36,8 @@ Blender (3.0+) addon that adds translation features to Blender's text editor. Tu
 - This addon is best used by keeping two separate text editors open in Blender, one for the source language, and one for the target language. See preview below for an example.
 
 ## Preview ##
-Translation UI
+#### Translation UI: ####
 ![image](https://user-images.githubusercontent.com/88953117/232837007-fdc965dd-275e-44e8-bef7-4ca0cf3e1db9.png)
 
-Fast Language Toggle
+#### Fast Language Toggle: ####
 ![Untitled](https://github.com/theanine3D/translate-text/assets/88953117/3c792e42-2890-43a6-9806-0145d2c841d3)
