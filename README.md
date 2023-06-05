@@ -21,7 +21,7 @@ Blender (3.0+) addon that adds translation features to Blender's text editor. Tu
   - Vietnamese
   - Punjabi
   - Hindi
-- Reverse translate - instantly reverse the language settings
+- Reverse translate - instantly reverse the selected languages
 - Fast Language Toggle - allows instantly switching Blender's whole UI between two different languages, using a single button press or custom hotkey. Supports all Blender localizations marked as 'complete'.
 
 ## Installation
