@@ -2,12 +2,12 @@
 Blender (3.0+) addon that adds translation features to Blender's text editor. Tutorial makers and 3D educators that teach multilanguage classes may find this addon useful for showing step-by-step instructions in multiple languages.
 
 ## Features
-- Support for 4 different translation services
+- Translating text via 4 different translation services
   - Google
   - Bing
   - Baidu
   - Sogou
-- Support for 13 different languages:
+- Translating between 13 different languages:
   - English
   - Chinese
   - Spanish
@@ -21,7 +21,8 @@ Blender (3.0+) addon that adds translation features to Blender's text editor. Tu
   - Vietnamese
   - Punjabi
   - Hindi
-- Reverse translate
+- Reverse translate - instantly reverse the language settings
+- Fast Language Toggle - allows instantly switching Blender's whole UI between two different languages, using a single button press or custom hotkey
 
 ## Installation
 1. Click the green "Code" button above and press "Download ZIP"
