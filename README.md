@@ -34,6 +34,7 @@ Blender (3.0+) addon that adds translation features to Blender's text editor. Tu
 - The translate settings panel can be found in the right sidebar of the Text Editor in Blender. Press Ctrl + T to open the sidebar and then click on the "Translate" tab.
 - Translations are stored in a text file named after the target language. For example, if you translate English to Chinese, a text file named "Chinese" will be used to store the resulting translation. If a text file with that name doesn't exist, the addon will create one. 
 - This addon is best used by keeping two separate text editors open in Blender, one for the source language, and one for the target language. See preview below for an example.
+- The fast language toggle can be found via the search (F3 or Spacebar), and then either assigned to a hotkey or added to your Quick Favorites, for easy access 
 
 ## Preview ##
 #### Translation UI: ####
