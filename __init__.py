@@ -1,7 +1,7 @@
 import bpy
 from bpy.utils import (register_class, unregister_class)
 from bpy.types import (Panel, PropertyGroup)
-from bpy.props import (StringProperty, BoolProperty)
+from bpy.props import (EnumProperty, BoolProperty, PointerProperty)
 
 import subprocess
 import platform
@@ -14,7 +14,7 @@ bl_info = {
     "name": "Translate Text",
     "description": "Translate text in Blender's text editor, using a variety of different online translation services",
     "author": "Theanine3D",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (3, 0, 0),
     "category": "Text",
     "location": "Text Editor Sidebar (Ctrl + T)",
@@ -38,6 +38,17 @@ language_items = [
     ("pa", "Punjabi", "Punjabi"),
     ("hi", "Hindi", "Hindi")
 ]
+
+fast_lang_items = [
+    ("en_US", "English", "English"),
+    ("zh_CN", "Chinese", "Chinese"),
+    ("vi_VN", "Vietnamese", "Vietnamese"),
+    ("sk_SK", "Slovak", "Slovak"),
+    ("es", "Spanish", "Spanish"),
+    ("fr_FR", "French", "French"),
+    ("ja_JP", "Japanese", "Japanese")
+]
+
 service_items = [
     ("google", "Google", "Google Translate"),
     ("bing", "Bing", "Microsoft Bing Translate"),
@@ -48,28 +59,31 @@ service_items = [
 dependencies_installed = False
 
 
-class TranslateTextProp(bpy.types.PropertyGroup):
-    source_language: bpy.props.EnumProperty(
+class TranslateTextProp(PropertyGroup):
+    source_language: EnumProperty(
         items=language_items,
         name="From",
         description="Select a language",
         default="en"
     )
-    target_language: bpy.props.EnumProperty(
+    target_language: EnumProperty(
         items=language_items,
         name="To",
         description="Select a language",
         default="zh"
     )
-    translator_service: bpy.props.EnumProperty(
+    translator_service: EnumProperty(
         items=service_items,
         name="Service",
         description="Select a translation service",
         default="google"
     )
-    overwrite: bpy.props.BoolProperty(
-        name="Overwrite", description="If enabled, the translated text will overwrite any text already present in the target text file. If disabled, translated text is appended at the top of the text file", default=False)
-
+    overwrite: BoolProperty(
+        name="Overwrite",
+        description="If enabled, the translated text will overwrite any text already present in the target text file. If disabled, translated text is appended at the top of the text file",
+        default=False
+    )
+    
 # FUNCTION DEFINITIONS
 
 
@@ -126,11 +140,37 @@ def display_msg_box(message="", title="Info", icon='INFO'):
 class TranslatePreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
+    toggle_lang1: EnumProperty(
+        items=fast_lang_items,
+        name="Toggle Language 1",
+        description="The 'Toggle Language' operator will switch Blender's UI between this language and the second toggle language",
+        default="en_US"
+    )
+    toggle_lang2: EnumProperty(
+        items=fast_lang_items,
+        name="Toggle Language 2",
+        description="The 'Toggle Language' operator will switch Blender's UI between this language and the first toggle language",
+        default="zh_CN"
+    )
+
     def draw(self, context):
         layout = self.layout
-        layout.operator("translate_text.install_dependencies")
-        layout.operator("translate_text.open_addon_folder")
-        layout.enabled = not dependencies_installed
+
+        dependencyUI = layout.box()
+        row0 = dependencyUI.row()
+        row1 = dependencyUI.row()
+
+        langToggleUI = layout.box()
+        row2 = langToggleUI.row()
+        row3 = langToggleUI.row()
+
+        row0.operator("translate_text.install_dependencies")
+        row1.operator("translate_text.open_addon_folder")
+        dependencyUI.enabled = not dependencies_installed
+
+        row2.prop(self, "toggle_lang1")
+        row3.prop(self, "toggle_lang2")
+
 
 
 class TranslateInstallDependencies(bpy.types.Operator):
@@ -303,29 +343,41 @@ class ReverseLanguages(bpy.types.Operator):
         return {'FINISHED'}
 
 
+# Fast UI Language Toggle operator
+
+class ToggleLangFast(bpy.types.Operator):
+    """Instantly toggles Blender's UI language setting between two different languages (set in the addon preferences)"""
+    bl_idname = "translate_text.toggle_lang_fast"
+    bl_label = "Toggle Language"
+
+    def execute(self, context):
+        prefs = bpy.context.preferences.addons[__name__].preferences
+        lang1 = prefs.toggle_lang1
+        lang2 = prefs.toggle_lang2
+        if bpy.context.preferences.view.language == lang1:
+            bpy.context.preferences.view.language = lang2
+        else:
+            bpy.context.preferences.view.language = lang1
+
+        return {'FINISHED'}
+
 ops = (
     TranslateText,
-    ReverseLanguages
+    ReverseLanguages,
+    ToggleLangFast
 )
 
 
 def text_editor_menu_item(self, context):
     self.layout.operator("text.translate_text", text="Translate")
-
-
-def register():
-    bpy.utils.register_class(TranslateText)
-    bpy.types.TEXT_MT_editor_menus.append(text_editor_menu_item)
-
-
+ 
 def menu_func(self, context):
     for op in ops:
         self.layout.operator(op.bl_idname)
 
 # TRANSLATION PANEL
 
-
-class TranslateText_Panel(bpy.types.Panel):
+class TranslateText_Panel(Panel):
     bl_label = 'Translate Text'
     bl_idname = "TEXT_PT_translate_text"
     bl_space_type = 'TEXT_EDITOR'
@@ -362,24 +414,23 @@ classes = (
     TranslateText_Panel,
     TranslateTextProp,
     TranslateText,
+    ToggleLangFast,
     ReverseLanguages,
     TranslatePreferences,
     TranslateInstallDependencies,
     OpenAddonFolder
 )
 
-
 def register():
     for cls in classes:
-        bpy.utils.register_class(cls)
-    bpy.types.Scene.TranslateTextProp = bpy.props.PointerProperty(
+        register_class(cls)
+    bpy.types.Scene.TranslateTextProp = PointerProperty(
         type=TranslateTextProp)
     bpy.types.TEXT_MT_editor_menus.append(text_editor_menu_item)
 
-
 def unregister():
     for cls in classes:
-        bpy.utils.unregister_class(cls)
+        unregister_class(cls)
     del bpy.types.Scene.TranslateTextProp
     bpy.types.TEXT_MT_editor_menus.remove(text_editor_menu_item)
 
