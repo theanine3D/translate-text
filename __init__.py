@@ -14,7 +14,7 @@ bl_info = {
     "name": "Translate Text",
     "description": "Translate text in Blender's text editor, using a variety of different online translation services",
     "author": "Theanine3D",
-    "version": (1, 1),
+    "version": (1, 2),
     "blender": (3, 0, 0),
     "category": "Text",
     "location": "Text Editor Sidebar (Ctrl + T)",
@@ -48,6 +48,10 @@ fast_lang_items = [
     ("fr_FR", "French", "French"),
     ("ja_JP", "Japanese", "Japanese")
 ]
+
+# Blender 4.0 changed some of the language codes
+if bpy.app.version >= (4, 0, 0):
+    fast_lang_items[1] = ("zh_HANS","Chinese", "Chinese")
 
 service_items = [
     ("google", "Google", "Google Translate"),
@@ -150,7 +154,7 @@ class TranslatePreferences(bpy.types.AddonPreferences):
         items=fast_lang_items,
         name="Toggle Language 2",
         description="The 'Toggle Language' operator will switch Blender's UI between this language and the first toggle language",
-        default="zh_CN"
+        default="zh_CN" if bpy.app.version < (4,0,0) else "zh_HANS"
     )
 
     def draw(self, context):
